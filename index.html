@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#0b1c3f" />
+<title>GRT 2006–2007 · Vivekananda Municipal High School</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- Animated waving India flag background (built by js/flag.js) -->
+<div id="flagBg" aria-hidden="true"></div>
+
+<!-- ===================== HEADER + TOP TABS ===================== -->
+<header class="app">
+  <div class="topbar">
+    <div class="logo">GRT</div>
+    <div class="brand">
+      <b>GRT · 2006–2007</b>
+      <small>Vivekananda Municipal High School</small>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn sm" id="authBtn" onclick="onAuthClick()">Login</button>
+  </div>
+  <nav class="tabs">
+    <button data-tab="home" class="active" onclick="go('home')"><span class="ic">🏠</span>Home</button>
+    <button data-tab="gallery" onclick="go('gallery')"><span class="ic">📸</span>Gallery</button>
+    <button data-tab="students" onclick="go('students')"><span class="ic">👥</span>Students</button>
+    <button data-tab="events" onclick="go('events')"><span class="ic">🗓️</span>Events</button>
+    <button data-tab="highlights" onclick="go('highlights')"><span class="ic">✨</span>Highlights</button>
+  </nav>
+</header>
+
+<!-- ===================== MAIN (each tab fills its own <section>) ===================== -->
+<main>
+  <div id="cfgBanner" class="banner" style="display:none">
+    ⚠️ Firebase is not configured yet — running in <b>local demo mode</b> (data saved only on this device).
+    Edit <b>js/config.js</b> with your Firebase keys to enable shared, 24/7 data. See <b>README.md</b>.
+  </div>
+
+  <section id="home"       class="view active"></section> <!-- js/home.js -->
+  <section id="gallery"    class="view"></section>        <!-- js/gallery.js -->
+  <section id="students" class="view"></section>        <!-- js/students.js -->
+  <section id="events"   class="view"></section>        <!-- js/events.js -->
+  <section id="highlights" class="view"></section>        <!-- js/highlights.js -->
+</main>
+
+<!-- ===================== SHARED MODALS ===================== -->
+<div class="ov" id="loginOv">
+  <div class="modal">
+    <button class="x" onclick="closeOv('loginOv')">×</button>
+    <h3>🔐 Admin Login</h3>
+    <div class="field"><label>Username</label><input id="lu" placeholder="username" autocomplete="off"></div>
+    <div class="field"><label>Password</label><input id="lp" type="password" placeholder="password"></div>
+    <button class="btn block" onclick="doLogin()">Login</button>
+  </div>
+</div>
+
+<div class="ov" id="photoOv">
+  <div class="modal">
+    <button class="x" onclick="closeOv('photoOv')">×</button>
+    <div class="lightbox"><img id="lbImg" src="" alt="" style="cursor:zoom-in" onclick="openViewer(CUR)"></div>
+    <div id="lbCap" class="muted" style="margin:10px 2px;font-size:13.5px"></div>
+    <h3 id="cmtHdr" style="font-size:15px;margin:14px 0 6px">💬 Comments</h3>
+    <div id="cmtList"></div>
+    <div class="row" style="margin-top:12px">
+      <input id="cName" placeholder="Your name" class="grow" style="max-width:180px">
+      <input id="cText" placeholder="Add a comment…" maxlength="35" class="grow" onkeydown="if(event.key==='Enter')addComment()">
+    </div>
+    <button class="btn block sm" style="margin-top:10px" onclick="addComment()">Post comment</button>
+  </div>
+</div>
+
+<!-- Full-screen zoomable image viewer -->
+<div class="ov viewer" id="imgViewer">
+  <div class="vzoom">
+    <button class="vbtn" onclick="viewerZoom(-1)">−</button>
+    <button class="vbtn" onclick="viewerZoom(1)">+</button>
+    <button class="vbtn" onclick="downloadPhoto(vCurId)" title="Download">⬇</button>
+  </div>
+  <button class="vbtn vclose" onclick="closeViewer()">×</button>
+  <div class="vstage" id="vstage"><img id="vImg" src="" alt=""></div>
+  <div class="vhint">Pinch or double-tap to zoom · drag to move</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<!-- App (order matters) -->
+<script src="config.js"></script>   <!-- edit your keys/creds/date here -->
+<script src="flag.js"></script>     <!-- animated waving flag background -->
+<script src="core.js"></script>     <!-- data, auth, nav, helpers -->
+<script src="home.js"></script>     <!-- Home tab -->
+<script src="gallery.js"></script>  <!-- Gallery tab -->
+<script src="students.js"></script> <!-- Students tab -->
+<script src="events.js"></script>   <!-- Events tab -->
+<script src="highlights.js"></script> <!-- Highlights tab -->
+<script src="app.js"></script>      <!-- boots everything -->
+</body>
+</html>

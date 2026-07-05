@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Anyone can READ everything (view-only visitors).
+    // Only the signed-in admin can WRITE — EXCEPT viewers may like/comment on photos.
+
+    // Photos: admin adds/deletes; anyone may update ONLY the likes & comments fields.
+    match /gallery/{id} {
+      allow read: if true;
+      allow create, delete: if request.auth != null;
+      // Admin may change anything; visitors may only touch likes/comments,
+      // and comments/likes are capped per photo.
+      allow update: if request.auth != null
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likedBy', 'comments'])
+            && request.resource.data.comments.size() <= 50
+            && request.resource.data.likedBy.size() <= 100);
+    }
+
+    // Students: view by all, changes by admin only.
+    match /students/{id} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Events: view by all, changes by admin only.
+    match /events/{id} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Highlights: view by all, changes by admin only.
+    match /highlights/{id} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // App settings (event date/time): view by all, changes by admin only.
+    match /settings/{id} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Everything else: locked down.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
